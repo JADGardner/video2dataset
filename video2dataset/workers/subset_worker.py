@@ -20,6 +20,7 @@ from video2dataset.subsamplers import (
     NoOpSubsampler,
     ResolutionSubsampler,
     AudioRateSubsampler,
+    Stereo3DCropSubsampler,
 )
 from video2dataset.types import EncodeFormats, Streams
 

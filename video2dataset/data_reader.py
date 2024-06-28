@@ -182,11 +182,14 @@ class YtDlpDownloader:
     def __call__(self, url):
         modality_paths = {}
 
-        video_format_string = (
-            f"wv*[height>={self.video_size}][ext=mp4]{'[codec=avc1]' if self.specify_codec else ''}/"
-            f"w[height>={self.video_size}][ext=mp4]{'[codec=avc1]' if self.specify_codec else ''}/"
-            f"bv/b[ext=mp4]{'[codec=avc1]' if self.specify_codec else ''}"
-        )
+        if isinstance(self.video_size, str):
+            video_format_string = "bestvideo[ext=mp4]"
+        else:
+            video_format_string = (
+                f"wv*[height>={self.video_size}][ext=mp4]{'[codec=avc1]' if self.specify_codec else ''}/"
+                f"w[height>={self.video_size}][ext=mp4]{'[codec=avc1]' if self.specify_codec else ''}/"
+                f"bv/b[ext=mp4]{'[codec=avc1]' if self.specify_codec else ''}"
+            )
         audio_fmt_string = (
             f"wa[asr>={self.audio_rate}][ext=m4a] / ba[ext=m4a]" if self.audio_rate > 0 else "ba[ext=m4a]"
         )

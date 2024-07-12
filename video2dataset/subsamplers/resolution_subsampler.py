@@ -52,7 +52,10 @@ class ResolutionSubsampler(Subsampler):
                 try:
                     _ = ffmpeg.input(f"{tmpdir}/input.mp4")
                     if "scale" in self.resize_mode:
-                        if self.height > 0:
+                        # if both height and width are set, scale mode will have the specified height
+                        if self.height > 0 and self.width > 0:
+                            _ = _.filter("scale", self.width, self.height)
+                        if self.height > 0 and self.width < 0:
                             _ = _.filter("scale", -2, self.height)
                         else:
                             _ = _.filter("scale", self.width, -2)

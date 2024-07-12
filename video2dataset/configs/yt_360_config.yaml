@@ -4,7 +4,8 @@ subsampling:
             some_arg: 1
     ResolutionSubsampler:
         args:
-            video_size: 2160
+            width: 2048
+            height: 1024
             resize_mode: "scale"
     FrameSubsampler:
         args:

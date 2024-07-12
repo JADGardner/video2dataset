@@ -4,6 +4,7 @@ import math
 import time
 import pyarrow as pa
 import traceback
+import json
 
 import fsspec
 
@@ -23,6 +24,7 @@ from video2dataset.subsamplers import (
     NoOpSubsampler,
     ResolutionSubsampler,
     AudioRateSubsampler,
+    Stereo3DCropSubsampler,
 )
 
 
@@ -83,6 +85,9 @@ class DownloadWorker:
         self.noop_subsampler = NoOpSubsampler()
 
         video_subsamplers: List[Any] = []
+        # print(config["subsampling"])
+        if "Stereo3DCropSubsampler" in config["subsampling"]:
+            video_subsamplers.append(Stereo3DCropSubsampler(**config["subsampling"]["Stereo3DCropSubsampler"]["args"]))
         if "ResolutionSubsampler" in self.config["subsampling"]:
             video_subsamplers.append(ResolutionSubsampler(**self.config["subsampling"]["ResolutionSubsampler"]["args"]))
         if "FrameSubsampler" in self.config["subsampling"]:
@@ -233,9 +238,11 @@ class DownloadWorker:
                         else self.noop_subsampler
                     )
                     subsampled_streams, metas, error_message = broadcast_subsampler(streams, meta)
-
+                    
                     for modality in subsampled_streams:
+                        # print(self.subsamplers[modality])
                         for modality_subsampler in self.subsamplers[modality]:
+                            # print(f"Subsampling {modality} with {modality_subsampler}")
                             subsampled_streams, metas, error_message = modality_subsampler(subsampled_streams, metas)
 
                     if error_message is not None:

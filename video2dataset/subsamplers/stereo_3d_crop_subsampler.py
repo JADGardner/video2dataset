@@ -1,25 +1,33 @@
 import os
 import ffmpeg
 import tempfile
+import json
 from .subsampler import Subsampler
 
 class Stereo3DCropSubsampler(Subsampler):
-    def __init__(self, encode_format: str = "mp4"):
+    def __init__(self, some_arg: int = 1, encode_format: str = "mp4"):
+        self.some_arg = some_arg
         self.encode_format = encode_format
+        self.encode_formats = {
+            'video': encode_format
+        }
 
-    def get_stereo3d_type(self, video_path):
+    def get_stereo3d_type(self, metadata):
         """Get the stereo 3D type of a video"""
-        try:
-            probe = ffmpeg.probe(video_path)
-            for stream in probe['streams']:
-                for side_data in stream.get('side_data', []):
-                    if side_data.get('side_data_type') == 'Stereo3D':
-                        return side_data.get('type')
-            return None
-        except ffmpeg.Error:
-            return None
+        # try:
+        #     probe = ffmpeg.probe(video_path)
+        #     print(probe)
+        #     for stream in probe['streams']:
+        #         for side_data in stream.get('side_data', []):
+        #             if side_data.get('side_data_type') == 'Stereo3D':
+        #                 return side_data.get('type')
+        #     return None
+        # except ffmpeg.Error:
+        #     return None
+        return metadata[0]['video_metadata']['streams'][0]['side_data_list'][0]['type']
 
     def __call__(self, streams, metadata=None):
+        # print("Subsampling stereo 3D video")
         video_bytes = streams["video"]
         subsampled_bytes = []
         for vid_bytes in video_bytes:
@@ -30,7 +38,8 @@ class Stereo3DCropSubsampler(Subsampler):
                 with open(input_path, "wb") as f:
                     f.write(vid_bytes)
                 
-                stereo3d_type = self.get_stereo3d_type(input_path)
+                stereo3d_type = self.get_stereo3d_type(metadata)
+                # print(f"Stereo 3D type: {stereo3d_type}")
                 
                 try:
                     _ = ffmpeg.input(input_path)

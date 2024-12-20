@@ -40,6 +40,7 @@ class FrameSubsampler(Subsampler):
         self.encode_formats = {"video": encode_format}
 
     def __call__(self, streams, metadata=None):
+        # Print("Subsampling frame")
         video_bytes = streams["video"]
         subsampled_bytes, subsampled_metas = [], []
         for i, vid_bytes in enumerate(video_bytes):

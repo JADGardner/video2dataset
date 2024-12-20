@@ -52,6 +52,7 @@ class CutDetectionSubsampler(Subsampler):
         self.min_scene_len = min_scene_len
 
     def __call__(self, streams, metadata=None):
+        # print("Subsampling cut detection")
         video_bytes = streams["video"][0]
 
         try:
@@ -62,6 +63,10 @@ class CutDetectionSubsampler(Subsampler):
 
                 video = open_video(video_path)
 
+                # copy video file locally
+                # shutil.copy(video_path, "test.mp4")
+
+                # print('video path:', video_path)
                 detector = ContentDetector(threshold=self.threshold, min_scene_len=self.min_scene_len)
                 scene_manager = SceneManager()
                 scene_manager.add_detector(detector)
@@ -72,6 +77,7 @@ class CutDetectionSubsampler(Subsampler):
                 original_fps = video.frame_rate
                 cuts["original_fps"] = original_fps
 
+                # print('running detect scenes')
                 scene_manager.detect_scenes(video=video)
                 cuts["cuts_original_fps"] = get_scenes_from_scene_manager(scene_manager, self.cut_detection_mode)
                 if self.framerates is not None:

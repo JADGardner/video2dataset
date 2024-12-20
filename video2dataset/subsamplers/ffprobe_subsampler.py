@@ -19,6 +19,7 @@ class FFProbeSubsampler(Subsampler):
         self.extract_keyframes = extract_keyframes
 
     def __call__(self, streams, metadata):
+        # print("Subsampling ffprobe")
         # TODO: this should also work for audio (maybe others)
         video_bytes = streams["video"][0]
         with tempfile.TemporaryDirectory() as tmpdir:

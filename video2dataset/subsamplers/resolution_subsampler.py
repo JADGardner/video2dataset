@@ -43,6 +43,7 @@ class ResolutionSubsampler(Subsampler):
         self.encode_format = encode_format
 
     def __call__(self, streams, metadata=None):
+        # print("Subsampling resolution")
         video_bytes = streams["video"]
         subsampled_bytes = []
         for vid_bytes in video_bytes:

@@ -288,6 +288,7 @@ class ClippingSubsampler(Subsampler):
         self.precision = precision
 
     def __call__(self, streams: Streams, metadata: dict):
+        # print("Subsampling clipping")
         strtime_formatting = isinstance(metadata["clips"][0][0], str)
 
         clip_spans = _adjust_clip_spans(

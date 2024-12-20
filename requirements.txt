@@ -16,7 +16,7 @@ decord
 #eva-decord  # use eva-decord instead of decord on Mac (https://github.com/dmlc/decord/issues/213)
 torch>=2.2.1
 langdetect
-torchdata>=0.7.1
+torchdata==0.9.0
 torchaudio>=2.2.1
 soundfile
 omegaconf

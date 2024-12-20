@@ -14,12 +14,12 @@ source ~/.bashrc
 
 conda activate roteqssl
 
-video2dataset --url_list="roteqssl/assets/equirectangular_video_urls.txt" \
+video2dataset --url_list="third_party/video2dataset/assets/equirectangular_video_urls_sample.txt" \
               --input_format="txt" \
-              --output_folder="data/video2dataset_data_nodes" \
+              --output_folder="data/video2dataset_data_output" \
               --output_format="files" \
               --url_col="url" \
               --caption_col="caption" \
               --enable_wandb=True \
               --max_shard_retry=2 \
-              --config="roteqssl/assets/yt_360_config.yaml"
+              --config="third_party/video2dataset/configs/yt_360_config.yaml"

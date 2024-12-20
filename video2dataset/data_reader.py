@@ -183,7 +183,7 @@ class YtDlpDownloader:
         modality_paths = {}
 
         if isinstance(self.video_size, str):
-            video_format_string = "bestvideo[ext=mp4]"
+            video_format_string = "bestvideo[ext=mp4][vcodec!^=av]"
         else:
             video_format_string = (
                 f"wv*[height>={self.video_size}][ext=mp4]{'[codec=avc1]' if self.specify_codec else ''}/"
